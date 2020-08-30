@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import Customer from './components/Customer'
-import './App.css'
-import Paper from '@material-ui/core/Paper'
-import Table from '@material-ui/core/Table'
-import TableHead from '@material-ui/core/TableHead'
-import TableBody from '@material-ui/core/TableBody'
-import TableRow from '@material-ui/core/TableRow'
-import TableCell from '@material-ui/core/TableCell'
-import { withStyles } from '@material-ui/core/styles'
+import './App.css';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   root: {
@@ -18,67 +18,46 @@ const styles = theme => ({
   table: {
     minWidth: 1080
   }
-})
+});
 
-const custonmers =[
-  {
-    'id':1,
-    'image':'https://placeimg.com/64/64/1',
-    'name': '太郎',
-    'birthday':'920913',
-    'gender': '男',
-    'job':'社員'
-  },
-  {
-    'id':2,
-    'image':'https://placeimg.com/64/64/2',
-    'name': 'キム',
-    'birthday':'910913',
-    'gender': '男',
-    'job':'学生'
-  },
-  {
-    'id':3,
-    'image':'https://placeimg.com/64/64/3',
-    'name': '山下',
-    'birthday':'900315',
-    'gender': '女',
-    'job':'栄養士'
+class App extends Component {
+
+  state = {
+    customers: ""
   }
-]
 
-class App extends Component{
-  render(){
-    const {classes} = this.props
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    console.log(response);
+    const body = await response.json();
+    return body;
+  }
+
+  render() {
+    const { classes } = this.props;
     return (
-      <Paper className= {classes.root}>
-        <Table className= {classes.table}>
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell>번호</TableCell>
-              <TableCell>이미지</TableCell>
-              <TableCell>이름</TableCell>
-              <TableCell>생년월일</TableCell>
-              <TableCell>성별</TableCell>
-              <TableCell>직업</TableCell>
-            </TableRow>      
+              <TableCell>番号</TableCell>
+              <TableCell>イメージ</TableCell>
+              <TableCell>氏名</TableCell>
+              <TableCell>生年月日</TableCell>
+              <TableCell>性別</TableCell>
+              <TableCell>職業</TableCell>
+            </TableRow>
           </TableHead>
           <TableBody>
-            {
-              custonmers.map(c => {
-                return(
-                  <Customer
-                  key =　{c.id}
-                  id={c.id}
-                  image={c.image}
-                  name = {c.name}
-                  birthday = {c.birthday}
-                  gender = {c.gender}
-                  job = {c.job}
-                />
-                )
-              })
-            }
+            {this.state.customers ? this.state.customers.map(c => {
+              return ( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.name} gender={c.gender} job={c.job}/> );
+            }) : ""}
           </TableBody>
         </Table>
       </Paper>
