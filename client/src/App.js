@@ -67,7 +67,7 @@ class App extends Component {
           </TableHead>
           <TableBody>
             {this.state.customers ? this.state.customers.map(c => {
-              return ( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.name} gender={c.gender} job={c.job}/> );
+              return ( <Customer key={c.id} id={c.ID} image={c.IMAGE} name={c.NAME} birthday={c.BIRTHDAY} gender={c.GENDER} job={c.JOB}/> );
             }) : 
             <TableRow>
               <TableCell colSpan = "6"  align= "center">
